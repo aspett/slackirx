@@ -1,8 +1,8 @@
 defmodule Slackirx do
   use Application
 
-  @slack_token Application.get_env(:slack, :token)
-  @irc_channels [ Application.get_env(:irc, :channel) ]
+  @slack_token Application.get_env(:slackirx, :slack).token
+  @irc_channels [ Application.get_env(:slackirx, :irc).channel ]
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false

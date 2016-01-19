@@ -1,9 +1,9 @@
 defmodule SlackHandler do
   use GenEvent
 
-  @slack_channel Application.get_env(:slack, :channel)
-  @user          Application.get_env(:slack, :relay_user)
-  @irc_channel   Application.get_env(:irc,   :channel)
+  @slack_channel Application.get_env(:slackirx, :slack).channel
+  @user          Application.get_env(:slackirx, :slack).relay_user
+  @irc_channel   Application.get_env(:slackirx, :irc).channel
 
   def handle_event({:slack, [channel: chan_name, user: user_name, message: msg, slack: slack]}, state) do
     Agent.update(SlackState, fn (_state) -> slack end)

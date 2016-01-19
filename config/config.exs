@@ -2,19 +2,21 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :slack,
-token: "Slack token",
-channel: "channel_name", # Only supporting a single slack channel currently
-relay_user: "username" # Only supporting relaying messages from a single user currently
-
-config :irc,
-channel: "#channel",
-host: "server.server.com",
-port: 6667,
-pass: "",
-nick: "Mr Roboto",
-user: "Mr Roboto",
-name: "Mr Roboto"
+config :slackirx,
+slack: %{
+  token: "",
+  channel: "slack_chan", # Only supporting a single slack channel currently
+  relay_user: "slack_username" # Only supporting relaying messages from a single user currently
+},
+irc: %{
+  channel: "#slackirx",
+  host: "irc.freenode.net",
+  port: 6667,
+  pass: "",
+  nick: "MrRoboto",
+  user: "MrRoboto",
+  name: "MrRoboto"
+}
 
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this

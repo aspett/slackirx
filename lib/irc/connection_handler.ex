@@ -1,11 +1,12 @@
 defmodule ConnectionHandler do
   defmodule State do
-    defstruct host: Application.get_env(:irc, :host),
-              port: Application.get_env(:irc, :port),
-              pass: Application.get_env(:irc, :pass),
-              nick: Application.get_env(:irc, :nick),
-              user: Application.get_env(:irc, :user),
-              name: Application.get_env(:irc, :name),
+    @config Application.get_env(:slackirx, :irc)
+    defstruct host: @config.host,
+              port: @config.port,
+              pass: @config.pass,
+              nick: @config.nick,
+              user: @config.user,
+              name: @config.name,
               client: nil
   end
 

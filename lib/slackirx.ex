@@ -2,6 +2,7 @@ defmodule Slackirx do
   use Application
 
   @slack_token Application.get_env(:slack, :token)
+  @irc_channels [ Application.get_env(:irc, :channel) ]
 
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
@@ -14,9 +15,9 @@ defmodule Slackirx do
     {:ok, irc_client} = ExIrc.start_client!
 
     children = [
-      worker(SlackBot, [Application.get_env(:slack, :token), slack_handler_pid]),
+      worker(SlackBot, [@slack_token, :token), slack_handler_pid]),
       worker(ConnectionHandler, [irc_client]),
-      worker(LoginHandler, [irc_client, [Application.get_env(:irc, :channel)]]),
+      worker(LoginHandler, [irc_client, @irc_channels]),
       worker(IrcHandler, [irc_client]),
       worker(Agent, [fn -> nil end, [name: SlackState]], id: Agent.SlackState),
       worker(Agent, [fn -> irc_client end, [name: IRCClient]], id: Agent.IRCClient)

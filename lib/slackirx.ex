@@ -15,7 +15,7 @@ defmodule Slackirx do
     {:ok, irc_client} = ExIrc.start_client!
 
     children = [
-      worker(SlackBot, @slack_token, slack_handler_pid]),
+      worker(SlackBot, [@slack_token, slack_handler_pid]),
       worker(ConnectionHandler, [irc_client]),
       worker(LoginHandler, [irc_client, @irc_channels]),
       worker(IrcHandler, [irc_client]),

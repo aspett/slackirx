@@ -7,5 +7,6 @@ Very WIP project, currently only relays one slack channel to one irc channel wit
 
 
 # Usage
+- Get dependencies `mix deps.get`
 - Configure `config/config.exs`
 - Run `mix run --no-halt`

@@ -85,7 +85,7 @@ defmodule IrcHandler do
       if !is_nil(slack) do
         SlackBot.send_to_slack(
           "#{from}: #{message}",
-          SlackBot.group_chan_from_name("slackirx_actgimjawa", slack).id,
+          SlackBot.group_chan_from_name(Application.get_env(:slackirx, :slack).channel, slack).id,
           slack
         )
       else

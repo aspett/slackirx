@@ -1,4 +1,4 @@
-defmodule SlackHandler do
+defmodule RelayHandler do
   use GenEvent
 
   @slack_channel Application.get_env(:slackirx, :slack).channel

@@ -9,7 +9,7 @@ defmodule Slackirx do
 
     # Initialize slack events
     {:ok, slack_handler_pid} = GenEvent.start_link()
-    GenEvent.add_handler(slack_handler_pid, SlackHandler, [])
+    GenEvent.add_handler(slack_handler_pid, RelayHandler, [])
 
     # Initialize IRC
     {:ok, irc_client} = ExIrc.start_client!

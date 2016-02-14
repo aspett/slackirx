@@ -8,17 +8,17 @@ defmodule Slackirx do
     import Supervisor.Spec, warn: false
 
     # Initialize slack events
-    {:ok, slack_handler_pid} = GenEvent.start_link()
-    GenEvent.add_handler(slack_handler_pid, RelayHandler, [])
+    {:ok, relay_handler_pid} = GenEvent.start_link()
+    GenEvent.add_handler(relay_handler_pid, RelayHandler, [])
 
     # Initialize IRC
     {:ok, irc_client} = ExIrc.start_client!
 
     children = [
-      worker(SlackBot, [@slack_token, slack_handler_pid]),
+      worker(SlackBot, [@slack_token, relay_handler_pid]),
       worker(ConnectionHandler, [irc_client]),
       worker(LoginHandler, [irc_client, @irc_channels]),
-      worker(IrcHandler, [irc_client]),
+      worker(IrcHandler, [irc_client, relay_handler_pid]),
       worker(Agent, [fn -> nil end, [name: SlackState]], id: Agent.SlackState),
       worker(Agent, [fn -> irc_client end, [name: IRCClient]], id: Agent.IRCClient)
     ]

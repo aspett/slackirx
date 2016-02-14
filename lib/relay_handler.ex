@@ -24,8 +24,30 @@ defmodule RelayHandler do
     {:ok, state}
   end
 
+  def handle_event({:irc, {:message, message, from, channel}}, state) do
+    debug "#{from} sent a message to #{channel}: #{message}"
+
+    Agent.get(SlackState, fn (slack) ->
+      if !is_nil(slack) do
+        SlackBot.send_to_slack(
+          "#{from}: #{message}",
+          SlackBot.group_chan_from_name(Application.get_env(:slackirx, :slack).channel, slack).id,
+          slack
+        )
+      else
+        debug "Error: Slack state nil"
+      end
+    end)
+
+    {:ok, state}
+  end
+
   def handle_event(message, state) do
     IO.puts "Didn't recognise message"
     {:ok, state}
+  end
+
+  defp debug(msg) do
+    IO.puts IO.ANSI.yellow() <> msg <> IO.ANSI.reset()
   end
 end

@@ -44,12 +44,13 @@ defmodule RelayHandler do
 
   def handle_event({:irc, {:info, message}}) do
     Agent.get(SlackState, fn (slack) ->
-      if !is_nil(slack) do
-        SlackBot.send_to_slack(
-          message,
-          SlackBot.group_chan_from_name(Application.get_env(:slackirx, :slack).channel, slack).id,
-          slack
-        )
+        if !is_nil(slack) do
+          SlackBot.send_to_slack(
+            message,
+            SlackBot.group_chan_from_name(Application.get_env(:slackirx, :slack).channel, slack).id,
+            slack
+          )
+        end
       end
     )
   end

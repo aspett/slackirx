@@ -90,7 +90,7 @@ defmodule IrcHandler do
     {:noreply, state}
   end
 
-  def handle_info({:me, message, from, channel}, state) do
+  def handle_info({:me, message, from, channel}, state = [_client, handler]) do
     GenEvent.notify(handler, {:irc, {:message, "*me #{message}", from, channel}})
     debug "* #{from} #{message} in #{channel}"
     {:noreply, state}

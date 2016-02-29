@@ -8,7 +8,8 @@ defmodule IrcHandler do
     {:ok, state}
   end
 
-  def handle_info({:connected, server, port}, state) do
+  def handle_info({:connected, server, port}, state = [_client, handler]) do
+    GenEvent.notify(handler, {:irc, {:info, "*** Connected to server"}})
     debug "Connected to #{server}:#{port}"
     {:noreply, state}
   end
@@ -18,7 +19,8 @@ defmodule IrcHandler do
     {:noreply, state}
   end
 
-  def handle_info(:disconnected, state) do
+  def handle_info(:disconnected, state = [_client, handler]) do
+    GenEvent.notify(handler, {:irc, {:info, "*** Disconnected from server"}})
     debug "Disconnected from server"
     {:noreply, state}
   end
@@ -89,6 +91,7 @@ defmodule IrcHandler do
   end
 
   def handle_info({:me, message, from, channel}, state) do
+    GenEvent.notify(handler, {:irc, {:message, "*me #{message}", from, channel}})
     debug "* #{from} #{message} in #{channel}"
     {:noreply, state}
   end
